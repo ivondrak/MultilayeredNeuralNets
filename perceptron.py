@@ -27,11 +27,7 @@ class Perceptron:
     def run(self, net_input):
         actual_input = np.insert(net_input, 0, -1.0)
         product = np.dot(self.weights, actual_input)
-        actual_output = self.signum_function(product)
-        print("Weights are: ", self.weights)
-        print("Input vector is: ", actual_input)
-        print("Output vector is: ", product)
-        print("Output vector with applied sign function is: ", actual_output)
+        return self.signum_function(product)
 
 
     

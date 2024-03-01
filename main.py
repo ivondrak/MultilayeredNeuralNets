@@ -19,18 +19,13 @@ def run_perceptron():
     # Use a breakpoint in the code line below to debug your script.
     perceptron = Perceptron(training_set)
     perceptron.learning()
-    perceptron.run([net_input])
+    output = perceptron.run([net_input])
+    print("Result is: ", output)
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     run_perceptron()
-    training_set = [([0, 0], [0]), ([0, 1], [1]), ([1, 0], [1]), ([1, 1], [1])]
-    perceptron = Perceptron(training_set)
-    perceptron.learning()
-    perceptron.run([0, 0])
-    perceptron.run([0, 1])
-    perceptron.run([1, 0])
-    perceptron.run([1, 1])
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -5,11 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Ladicí program Pythonu: Aktuální soubor",
+            "name": "Ladicí program Pythonu: perceptron",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Ladicí program Pythonu: jupyter notebook",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "perceptron.ipynb",
+            "console": "integratedTerminal"
         }
-    ]
+    ]  
 }

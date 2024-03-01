@@ -5,11 +5,21 @@ from perceptron import Perceptron
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
+training_set = [
+    ([0.0, 1.0, 1.0], [0.0, 0.0]),
+    ([1.0, 0.0, 0.0], [1.0, 1.0]),
+    ([0.5, 0.5, 0.5], [1.0, 1.0])
+]
+
+net_input = [1.0, 0.0, 0.0]
+
 
 def run_perceptron():
+
     # Use a breakpoint in the code line below to debug your script.
-    perceptron = Perceptron(3,1)  # Press ⌘F8 to toggle the breakpoint.
-    perceptron.run([])
+    perceptron = Perceptron(training_set)
+    perceptron.learning()
+    perceptron.run([net_input])
 
 
 # Press the green button in the gutter to run the script.

@@ -27,7 +27,8 @@ class Perceptron:
     def run(self, net_input):
         actual_input = np.insert(net_input, 0, -1.0)
         product = np.dot(self.weights, actual_input)
-        return self.signum_function(product)
+        return self.signum_function(product).tolist()
+    
 
 
     

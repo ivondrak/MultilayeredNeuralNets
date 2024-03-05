@@ -7,6 +7,7 @@ class BackPropagation:
         self.weights = []
         for i in range(len(topology)-1):
             self.weights.append(np.random.randn(topology[i + 1], topology[i]))
+<<<<<<< HEAD
         #self.biases = []
         #for i in range(1, len(topology)):
         #    self.biases.append(np.random.randn(1, topology[i]))
@@ -80,3 +81,7 @@ class BackPropagation:
 
 
 
+=======
+        self.learning_rate = 0.3
+        self.epochs = 1000
+>>>>>>> origin/backpropagatiion

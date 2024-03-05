@@ -2,13 +2,13 @@ import numpy as np
 
 
 class Perceptron:
-    def __init__(self, training_set):
+    def __init__(self, training_set, epochs):
         self.training_data = training_set
         self.num_features = len(training_set[0][0])
         self.num_results = len(training_set[0][1])
         self.weights = np.random.randn(self.num_results, self.num_features + 1)
         self.learning_rate = 0.3
-        self.epochs = 1000
+        self.epochs = epochs
 
     def signum_function(self, x):
         return (x >= 0).astype(np.int32)

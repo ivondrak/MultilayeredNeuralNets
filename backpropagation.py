@@ -2,7 +2,7 @@ import numpy as np
 
 
 class BackPropagation:
-    def __init__(self, training_set, topology):
+    def __init__(self, training_set, topology, epochs):
         self.training_data = training_set
         self.weights = []
         for i in range(len(topology)-1):
@@ -26,10 +26,10 @@ class BackPropagation:
         for i in range(len(topology)-1):
             self.gradients.append(np.zeros((topology[i+1], topology[i])))
         self.num_layers = len(topology)
-        self.output_error = np.zeros((1, topology[-1]))
-        self.output_activation = np.zeros((1, topology[-1]))
+        self.output_error = np.zeros((topology[-1], 1))
+        self.output_activation = np.zeros((topology[-1], 1))
         self.learning_rate = 0.3
-        self.epochs = 1000
+        self.epochs = epochs
 
     def sigmoid_function(self, z):
         return 1 / (1 + np.exp(-z))
@@ -51,7 +51,7 @@ class BackPropagation:
         self.activations[0] = actual_input.reshape(len(actual_input), 1)
         for i in range(1, self.num_layers):
             self.activations[i] = self.sigmoid_function(np.dot(self.weights[i - 1], self.activations[i - 1]))
-        self.output_activation = self.activations[-1]
+        self.output_activation = np.around(self.activations[-1], decimals=2)
 
     def calculate_errors(self, desired_output):
         array_desired_output = np.array(desired_output)
@@ -72,3 +72,6 @@ class BackPropagation:
         for i in range(len(self.weights)):
             self.weights[i] -= self.deltas[i]
 
+    def run(self, input_data):
+        self.feed_forward(input_data)
+        return self.output_activation.flatten().tolist()

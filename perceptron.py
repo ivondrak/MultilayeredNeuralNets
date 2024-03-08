@@ -29,6 +29,19 @@ class Perceptron:
         product = np.dot(self.weights, actual_input)
         return self.signum_function(product).tolist()
     
+    def calculate_mse(self):
+        mse = 0
+        for vector in self.training_data:
+            input_vector = np.array(vector[0])
+            desired_output = np.array(vector[1])
+            actual_input = np.insert(input_vector, 0, -1.0)
+            product = np.dot(self.weights, actual_input)
+            actual_output = self.signum_function(product)
+            error = desired_output - actual_output
+            mse += np.sum(error ** 2)
+        mse /= len(self.training_data)
+        return mse
+    
 
 
     

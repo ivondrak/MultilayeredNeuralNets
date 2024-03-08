@@ -122,3 +122,14 @@ class BackPropagation:
     def run(self, input_data):
         self.feed_forward(input_data)
         return self.output_activation.flatten().tolist()
+    
+    def calculate_mean_squared_error(self):
+        total_error = 0
+        for data in self.training_data:
+            input_data = data[0]
+            desired_output = data[1]
+            predicted_output = self.run(input_data)
+            error = np.sum((np.array(desired_output) - np.array(predicted_output)) ** 2)
+            total_error += error
+        mean_squared_error = total_error / len(self.training_data)
+        return mean_squared_error   

@@ -2,7 +2,7 @@ import numpy as np
 
 
 class BackPropagation:
-    def __init__(self, training_set, topology, epochs):
+    def __init__(self, training_set, topology, learning_rates, epochs):
         self.training_data = training_set
         self.weights = []
         for i in range(len(topology)-1):
@@ -34,7 +34,7 @@ class BackPropagation:
         self.num_layers = len(topology)
         self.output_error = np.zeros((topology[-1], 1))
         self.output_activation = np.zeros((topology[-1], 1))
-        self.learning_rate = 0.3
+        self.learning_rates = learning_rates
         self.epochs = epochs
 
     def sigmoid_function(self, z, slope, bias):
@@ -61,8 +61,6 @@ class BackPropagation:
     def feed_forward(self, net_input):
         actual_input = np.array(net_input)
         self.activations[0] = actual_input.reshape(len(actual_input), 1)
-        #for i in range(1, self.num_layers):
-        #    self.activations[i] = self.sigmoid_function(np.dot(self.weights[i - 1], self.activations[i - 1]))
         for i in range(1, self.num_layers):
             w = self.weights[i - 1]
             s = self.slopes[i]
@@ -87,30 +85,30 @@ class BackPropagation:
         self.calculate_slopes()
 
     def calculate_weights(self):
-        self.deltas_weights[-1] = self.learning_rate * self.gradients[-1]
+        self.deltas_weights[-1] = self.learning_rates[0] * self.gradients[-1]
         for i in range(self.num_layers - 2, 0, -1):
             self.errors[i] = np.dot(self.weights[i].T, self.errors[i + 1])
             self.gradients[i - 1] = np.dot(self.errors[i] * self.sigmoid_derivative(self.activations[i], self.slopes[i]), self.activations[i - 1].T)
-            self.deltas_weights[i - 1] = self.learning_rate * self.gradients[i - 1]
+            self.deltas_weights[i - 1] = self.learning_rates[0] * self.gradients[i - 1]
 
     def calculate_biases(self):
-        self.deltas_biases[-1] = self.learning_rate * self.errors[-1] * self.bias_derivative(self.activations[-1],
+        self.deltas_biases[-1] = self.learning_rates[1] * self.errors[-1] * self.bias_derivative(self.activations[-1],
                                                                                              self.slopes[-1])
         for i in range(self.num_layers - 2, 0, -1):
-            self.deltas_biases[i] = self.learning_rate * self.errors[i] * self.bias_derivative(
+            self.deltas_biases[i] = self.learning_rates[1] * self.errors[i] * self.bias_derivative(
                 self.activations[i], self.slopes[i])
 
     def calculate_slopes(self):
         w = self.weights[-1]
         x = self.activations[-2]
         z = np.dot(w, x)
-        self.deltas_slopes[-1] = self.learning_rate * self.errors[-1] * self.slope_derivative(self.activations[-1], z,
+        self.deltas_slopes[-1] = self.learning_rates[2] * self.errors[-1] * self.slope_derivative(self.activations[-1], z,
                                                                                              self.slopes[-1])
         for i in range(self.num_layers - 2, 0, -1):
             w = self.weights[i - 1]
             x = self.activations[i - 1]
             z = np.dot(w, x)
-            self.deltas_slopes[i] = self.learning_rate * self.errors[i] * self.slope_derivative(
+            self.deltas_slopes[i] = self.learning_rates[2] * self.errors[i] * self.slope_derivative(
                 self.activations[i], z, self.biases[i])
 
     def update_neural_net(self):

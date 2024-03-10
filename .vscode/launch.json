@@ -12,10 +12,17 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Ladicí program Pythonu: jupyter notebook",
+            "name": "Ladicí program Pythonu: jupyter perceptron",
             "type": "debugpy",
             "request": "launch",
             "program": "perceptron.ipynb",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Ladicí program Pythonu: jupyter backpropagation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "backpropagation.ipynb",
             "console": "integratedTerminal"
         }
     ]  

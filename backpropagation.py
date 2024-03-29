@@ -93,7 +93,7 @@ class BackPropagation:
 
     def calculate_biases(self):
         self.deltas_biases[-1] = self.learning_rates[1] * self.errors[-1] * self.bias_derivative(self.activations[-1],
-                                                                                             self.slopes[-1])
+            self.slopes[-1])
         for i in range(self.num_layers - 2, 0, -1):
             self.deltas_biases[i] = self.learning_rates[1] * self.errors[i] * self.bias_derivative(
                 self.activations[i], self.slopes[i])
@@ -132,4 +132,14 @@ class BackPropagation:
             error = np.sum((np.array(desired_output) - np.array(predicted_output)) ** 2)
             total_error += error
         mean_squared_error = total_error / len(self.training_data)
-        return mean_squared_error   
+        return mean_squared_error
+
+    def calculate_max_error(self):
+        max_error = 0
+        for data in self.training_data:
+            input_data = data[0]
+            desired_output = data[1]
+            predicted_output = self.run(input_data)
+            error = np.max(np.abs(np.array(desired_output) - np.array(predicted_output)))
+            max_error = max(max_error, error)
+        return max_error  

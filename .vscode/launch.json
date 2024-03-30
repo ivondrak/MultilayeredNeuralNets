@@ -5,21 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Ladicí program Pythonu: perceptron",
+            "name": "main.py - Spustit soubor",
             "type": "debugpy",
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal"
         },
         {
-            "name": "Ladicí program Pythonu: jupyter perceptron",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "perceptron.ipynb",
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "Ladicí program Pythonu: jupyter backpropagation",
+            "name": "backpropagation.ipynb - Spustit",
             "type": "debugpy",
             "request": "launch",
             "program": "backpropagation.ipynb",

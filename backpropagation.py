@@ -66,7 +66,7 @@ class BackPropagation:
             s = self.slopes[i]
             b = self.biases[i]
             x = self.activations[i - 1]
-            z = np.dot(w, x)
+            z = w @ x
             self.activations[i] = self.sigmoid_function(z, s, b)
         self.output_activation = np.around(self.activations[-1], decimals=2)
 
@@ -79,7 +79,8 @@ class BackPropagation:
         #self.errors[-1] = self.output_error * self.sigmoid_derivative(self.activations[-1])
         # Weights gradients
         self.errors[-1] = self.output_error
-        self.gradients[-1] = np.dot(self.errors[-1] * self.sigmoid_derivative(self.activations[-1], self.slopes[-1]), self.activations[-2].T)
+        # self.gradients[-1] = np.dot(self.errors[-1] * self.sigmoid_derivative(self.activations[-1], self.slopes[-1]), self.activations[-2].T)
+        self.gradients[-1] = (self.errors[-1] * self.sigmoid_derivative(self.activations[-1], self.slopes[-1])) @ self.activations[-2].T
         self.calculate_weights()
         self.calculate_biases()
         self.calculate_slopes()
@@ -87,8 +88,9 @@ class BackPropagation:
     def calculate_weights(self):
         self.deltas_weights[-1] = self.learning_rates[0] * self.gradients[-1]
         for i in range(self.num_layers - 2, 0, -1):
-            self.errors[i] = np.dot(self.weights[i].T, self.errors[i + 1])
-            self.gradients[i - 1] = np.dot(self.errors[i] * self.sigmoid_derivative(self.activations[i], self.slopes[i]), self.activations[i - 1].T)
+            self.errors[i] = self.weights[i].T @ self.errors[i + 1]
+            # self.gradients[i - 1] = np.dot(self.errors[i] * self.sigmoid_derivative(self.activations[i], self.slopes[i]), self.activations[i - 1].T)
+            self.gradients[i - 1] = (self.errors[i] * self.sigmoid_derivative(self.activations[i], self.slopes[i])) @ self.activations[i - 1].T
             self.deltas_weights[i - 1] = self.learning_rates[0] * self.gradients[i - 1]
 
     def calculate_biases(self):
@@ -103,11 +105,11 @@ class BackPropagation:
         x = self.activations[-2]
         z = np.dot(w, x)
         self.deltas_slopes[-1] = self.learning_rates[2] * self.errors[-1] * self.slope_derivative(self.activations[-1], z,
-                                                                                             self.slopes[-1])
+            self.slopes[-1])
         for i in range(self.num_layers - 2, 0, -1):
             w = self.weights[i - 1]
             x = self.activations[i - 1]
-            z = np.dot(w, x)
+            z = w @ x
             self.deltas_slopes[i] = self.learning_rates[2] * self.errors[i] * self.slope_derivative(
                 self.activations[i], z, self.biases[i])
 

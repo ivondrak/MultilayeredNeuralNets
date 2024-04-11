@@ -1,6 +1,7 @@
 import numpy as np
 
 
+
 class BackPropagation:
     def __init__(self, training_set, topology, learning_rates, epochs):
         self.training_data = training_set
@@ -36,6 +37,7 @@ class BackPropagation:
         self.output_activation = np.zeros((topology[-1], 1))
         self.learning_rates = learning_rates
         self.epochs = epochs
+        self.history = []
 
     def sigmoid_function(self, z, slope, bias):
         return 1 / (1 + np.exp(-1 * slope * (z - bias)))
@@ -51,12 +53,15 @@ class BackPropagation:
 
 
     def backpropagation(self):
+        self.history = []
         for epoch in range(self.epochs):
             for data in self.training_data:
                 self.feed_forward(data[0])
                 self.calculate_errors(data[1])
                 self.calculate_gradients()
                 self.update_neural_net()
+            mean_squared_error = self.calculate_mean_squared_error()
+            self.history.append(mean_squared_error)
 
     def feed_forward(self, net_input):
         actual_input = np.array(net_input)

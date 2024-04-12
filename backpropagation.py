@@ -7,7 +7,7 @@ class BackPropagation:
         self.training_data = training_set
         self.weights = []
         for i in range(len(topology)-1):
-            self.weights.append(np.random.randn(topology[i + 1], topology[i]))
+            self.weights.append(np.random.rand(topology[i + 1], topology[i]))
         self.biases = []
         for i in range(len(topology)):
             self.biases.append(np.zeros((topology[i], 1)))
@@ -135,8 +135,8 @@ class BackPropagation:
         for data in self.training_data:
             input_data = data[0]
             desired_output = data[1]
-            predicted_output = self.run(input_data)
-            error = np.sum((np.array(desired_output) - np.array(predicted_output)) ** 2)
+            actual_output = self.run(input_data)
+            error = np.sum((np.array(actual_output) - np.array(desired_output)) ** 2)
             total_error += error
         mean_squared_error = total_error / len(self.training_data)
         return mean_squared_error

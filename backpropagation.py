@@ -230,7 +230,8 @@ class BackPropagation (GenericBackPropagation):
             max_error = max(max_error, error)
         return max_error  
 
-# ReLU activation function    
+# ReLU activation function   
+ 
 class ReLUBackPropagation(GenericBackPropagation):
     
     def __init__(self, training_set, topology, learning_rates, epochs):
@@ -260,7 +261,7 @@ class ReLUBackPropagation(GenericBackPropagation):
 
     def activation_function(self, z):
         return np.maximum(0, z)
-    
+
     def activation_derivative(self, y):
         return np.where(y > 0, 1, 0)
-    
+

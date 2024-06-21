@@ -264,4 +264,62 @@ class ReLUBackPropagation(GenericBackPropagation):
 
     def activation_derivative(self, y):
         return np.where(y > 0, 1, 0)
+    
+# Softmax activation function
+class SoftmaxBackPropagation(ReLUBackPropagation):
+
+    def softmax(self, z):
+        exp_z = np.exp(z - np.max(z))
+        return exp_z / exp_z.sum(axis=0)
+
+    def cross_entropy_loss(self, y_pred, y_true):
+
+        total_loss = 0
+        for data in self.training_data:
+            input_data = data[0]
+            desired_output = data[1]
+            actual_output = self.run(input_data)
+            loss = -np.sum(np.array(desired_output) * np.log(np.array(actual_output) + 1e-8))
+            total_loss += loss
+        #mean_squared_error = total_error / len(self.training_data)
+        return total_loss
+    
+    def feed_forward(self, net_input):
+        actual_input = np.array(net_input)
+        self.activations[0] = actual_input.reshape(len(actual_input), 1)
+        for i in range(1, self.num_layers - 1):
+            w = self.weights[i - 1]
+            x = self.activations[i - 1]
+            z = w @ x
+            self.activations[i] = self.activation_function(z)
+        # Softmax on the last layer
+        w = self.weights[-1]
+        x = self.activations[-2]
+        z = w @ x
+        self.activations[-1] = self.softmax(z)
+        self.output_activation = np.around(self.activations[-1], decimals=2)
+
+    def backpropagation(self):
+        self.history = []
+        for epoch in range(self.epochs):
+            for data in self.training_data:
+                self.feed_forward(data[0])
+                self.calculate_errors(data[1])
+                self.calculate_gradients()
+                self.update_neural_net()
+            cross_entropy_loss = self.cross_entropy_loss(self.output_activation, data[1])
+            self.history.append(cross_entropy_loss)
+
+    def calculate_gradients(self):
+        self.errors[-1] = self.output_error
+        self.gradients[-1] = self.errors[-1]
+        self.calculate_weights()
+
+    def calculate_weights(self):
+        self.deltas_weights[-1] = self.learning_rates[0] * self.gradients[-1]
+        for i in range(self.num_layers - 2, 0, -1):
+            self.errors[i] = self.weights[i].T @ self.errors[i + 1]
+            self.gradients[i - 1] = (self.errors[i] * self.activation_derivative(self.activations[i])) @ self.activations[i - 1].T
+            self.deltas_weights[i - 1] = self.learning_rates[0] * self.gradients[i - 1]
+    
 

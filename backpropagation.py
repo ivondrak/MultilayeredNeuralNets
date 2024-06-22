@@ -272,7 +272,7 @@ class SoftmaxBackPropagation(ReLUBackPropagation):
         exp_z = np.exp(z - np.max(z))
         return exp_z / exp_z.sum(axis=0)
 
-    def cross_entropy_loss(self, y_pred, y_true):
+    def cross_entropy_loss(self):
 
         total_loss = 0
         for data in self.training_data:
@@ -307,7 +307,7 @@ class SoftmaxBackPropagation(ReLUBackPropagation):
                 self.calculate_errors(data[1])
                 self.calculate_gradients()
                 self.update_neural_net()
-            cross_entropy_loss = self.cross_entropy_loss(self.output_activation, data[1])
+            cross_entropy_loss = self.cross_entropy_loss()
             self.history.append(cross_entropy_loss)
 
     def calculate_gradients(self):
